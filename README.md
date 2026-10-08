@@ -24,12 +24,14 @@ This is a **single-URL analyst**, not a crawler. One page per run.
 cd C:\dev\work-repos\website-summarizer
 uv sync
 uv run playwright install firefox
-copy .env.example .env
+cp .env.example .env
 ```
 
 Fill the keys you actually use in `.env`. Unused providers can stay empty.
 Set `PLAYWRIGHT_BROWSER` to `chromium`, `firefox`, or `webkit` to choose an engine. The default is `firefox`.
 Install that engine with `uv run playwright install firefox` or `uv run playwright install webkit`.
+
+How to setup Ollama on Google Colab ([link](https://dev.to/gabriellavoura/setup-ollama-on-google-colab-4hng)).
 
 ```bash
 # optional local model

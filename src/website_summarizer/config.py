@@ -14,13 +14,13 @@ class Settings(BaseSettings):
     anthropic_api_key: str = ""
     gemini_api_key: str = ""
     ollama_api_base: str = "http://127.0.0.1:11434"
-    default_model: str = "openai/gpt-4o-mini"
+    default_model: str = "ollama/llama3.2"
     ollama_model: str = "ollama/llama3.2"
     available_models: str = (
+        "ollama/llama3.2"
         "openai/gpt-4o-mini,"
         "anthropic/claude-3-5-haiku-latest,"
         "gemini/gemini-2.0-flash,"
-        "ollama/llama3.2"
     )
     max_extract_chars: int = 24_000
     fetch_timeout_ms: int = 30_000

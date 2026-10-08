@@ -28,7 +28,7 @@ def complete_json(
         "model": model,
         "messages": messages,
         "temperature": temperature,
-        "timeout": 120,
+        # "timeout": 120,
     }
 
     if model.startswith("ollama/") and settings.ollama_api_base:
@@ -39,6 +39,7 @@ def complete_json(
     try:
         response = litellm.completion(**kwargs)
     except Exception as exc:  # LiteLLM raises many provider-specific types
+        print("LiteLLM exception:", repr(exc))
         raise LLMError(_friendly_llm_error(model, exc)) from exc
 
     try:
