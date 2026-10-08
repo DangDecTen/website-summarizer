@@ -1,0 +1,158 @@
+:root {
+  --ink: #1c1915;
+  --muted: #5c564c;
+  --paper: #f4efe6;
+  --panel: #fffdf8;
+  --line: #d9d0c3;
+  --accent: #0f5c57;
+  --accent-2: #c45c26;
+  --error: #8a2b2b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  background: radial-gradient(1200px 500px at 10% -10%, #e7f0ee 0%, var(--paper) 45%);
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+.shell {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 4rem;
+}
+
+.hero h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 2.4rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  margin: 0.2rem 0 0.6rem;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.72rem;
+  color: var(--accent);
+  margin: 0;
+}
+
+.lede,
+.hint,
+.meta,
+footer {
+  color: var(--muted);
+}
+
+.panel,
+.report,
+.banner {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 1.25rem;
+  margin: 1.25rem 0;
+  box-shadow: 0 12px 30px rgba(28, 25, 21, 0.04);
+}
+
+label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+
+input,
+select,
+button,
+textarea {
+  font: inherit;
+}
+
+input[type="url"],
+select {
+  width: 100%;
+  padding: 0.7rem 0.8rem;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: #fff;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem;
+  margin: 0.9rem 0 1rem;
+}
+
+button {
+  background: var(--accent);
+  color: #f7fffe;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.7rem 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+button.secondary {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+.banner.error {
+  border-color: #e3c0c0;
+  background: #fbeeee;
+  color: var(--error);
+}
+
+.report-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.report h2 {
+  font-family: Georgia, serif;
+  margin: 0 0 0.35rem;
+}
+
+.report h3 {
+  margin-top: 1.4rem;
+  border-top: 1px solid var(--line);
+  padding-top: 1rem;
+}
+
+.prose {
+  white-space: pre-wrap;
+}
+
+.meta a {
+  color: var(--accent-2);
+}
+
+footer {
+  font-size: 0.85rem;
+}
+
+@media (max-width: 640px) {
+  .row,
+  .report-head {
+    grid-template-columns: 1fr;
+    display: grid;
+  }
+}

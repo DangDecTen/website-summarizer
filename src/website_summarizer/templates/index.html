@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>website-summarizer</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="hero">
+        <p class="eyebrow">Single-URL analyst</p>
+        <h1>website-summarizer</h1>
+        <p class="lede">
+          Paste a public page. A real browser opens it, the article is extracted,
+          and a model returns translation, analysis, and a summary you can download.
+        </p>
+      </header>
+
+      <form class="panel" method="post" action="/analyze" id="analyze-form">
+        <label for="url">Public URL</label>
+        <input
+          id="url"
+          name="url"
+          type="url"
+          required
+          placeholder="https://example.com/article"
+          value="{{ url }}"
+          autocomplete="off"
+        />
+
+        <div class="row">
+          <div>
+            <label for="language">Output language</label>
+            <select id="language" name="language">
+              {% for code, label in languages.items() %}
+              <option value="{{ code }}" {% if code == language %}selected{% endif %}>{{ label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div>
+            <label for="model">Model</label>
+            <select id="model" name="model">
+              {% for item in models %}
+              <option value="{{ item }}" {% if item == model %}selected{% endif %}>{{ item }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" id="submit-btn">Analyze page</button>
+        <p class="hint">
+          Public pages only. No logins, CAPTCHAs, or crawls. Cloud keys and Ollama
+          live in your local <code>.env</code>.
+        </p>
+      </form>
+
+      {% if error %}
+      <div class="banner error" role="alert">{{ error }}</div>
+      {% endif %}
+
+      {% if elapsed is not none and not report %}
+      <p class="meta">Stopped after {{ "%.1f"|format(elapsed) }}s.</p>
+      {% endif %}
+
+      {% if report %}
+      <section class="report">
+        <div class="report-head">
+          <div>
+            <h2>{{ report.title or "Untitled page" }}</h2>
+            <p class="meta">
+              <a href="{{ report.final_url }}" rel="noreferrer">{{ report.final_url }}</a>
+              · {{ report.model }}
+              · {{ "%.1f"|format(report.elapsed_seconds) }}s
+              · {{ report.char_count }} chars
+              {% if report.truncated %}· truncated{% endif %}
+            </p>
+          </div>
+          <form method="post" action="/download">
+            <input type="hidden" name="title" value="{{ report.title or 'report' }}" />
+            <textarea name="markdown" hidden>{{ markdown }}</textarea>
+            <button type="submit" class="secondary">Download Markdown</button>
+          </form>
+        </div>
+
+        <article>
+          <h3>Summary</h3>
+          <p class="prose">{{ report.summary }}</p>
+          {% if report.summary_bullets %}
+          <ul>
+            {% for item in report.summary_bullets %}
+            <li>{{ item }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </article>
+
+        <article>
+          <h3>Analysis</h3>
+          <p><strong>Tone:</strong> {{ report.analysis.tone or "unknown" }}</p>
+          <p><strong>Entities:</strong> {{ report.analysis.entities | join(", ") or "none" }}</p>
+          <p><strong>Topics:</strong> {{ report.analysis.topics | join(", ") or "none" }}</p>
+          <h4>Key claims</h4>
+          <ul>
+            {% for item in report.analysis.key_claims %}
+            <li>{{ item }}</li>
+            {% else %}
+            <li>None extracted.</li>
+            {% endfor %}
+          </ul>
+          <h4>What’s missing / caveats</h4>
+          <ul>
+            {% for item in report.analysis.caveats %}
+            <li>{{ item }}</li>
+            {% else %}
+            <li>None noted.</li>
+            {% endfor %}
+          </ul>
+        </article>
+
+        <article>
+          <h3>Translation</h3>
+          <p class="prose">{{ report.translation }}</p>
+        </article>
+      </section>
+      {% endif %}
+
+      <footer>
+        Local app · v1 fetches only the URL you type · not a crawler
+      </footer>
+    </div>
+    <script>
+      const form = document.getElementById("analyze-form");
+      const button = document.getElementById("submit-btn");
+      form.addEventListener("submit", () => {
+        button.disabled = true;
+        button.textContent = "Opening page…";
+      });
+    </script>
+  </body>
+</html>

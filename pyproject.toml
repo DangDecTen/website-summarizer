@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "website-summarizer"
+version = "0.1.0"
+description = "Paste a public URL, extract the article, and get a translation + analysis + summary report."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "website-summarizer" }]
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+    "jinja2>=3.1",
+    "python-multipart>=0.0.12",
+    "playwright>=1.49",
+    "trafilatura>=2.0",
+    "readability-lxml>=0.8",
+    "lxml-html-clean>=0.4",
+    "litellm>=1.55",
+    "pydantic>=2.10",
+    "pydantic-settings>=2.6",
+    "python-dotenv>=1.0",
+    "hypercorn>=0.18.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3",
+    "httpx>=0.28",
+]
+
+[project.scripts]
+website-summarizer = "website_summarizer.web:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+website_summarizer = ["templates/*.html", "static/*.css"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.uv]
+default-groups = ["dev"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "httpx>=0.28",
+]
